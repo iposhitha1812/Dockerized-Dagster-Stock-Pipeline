@@ -1,18 +1,29 @@
-🚀 Dockerized Stock Market Data Pipeline using Dagster
+# 🚀 Dockerized Stock Market Data Pipeline using Dagster
 
-A fully containerized ETL pipeline that fetches, processes, and stores stock market data using
-Dagster + Python + PostgreSQL + Docker.
+A **fully containerized ETL pipeline** that fetches, processes, and stores stock market data using **Dagster**, **Python**, **PostgreSQL**, and **Docker**.
 
 This project demonstrates:
 
-01.Workflow orchestration with Dagster
-02.Containerization with Docker & Docker Compose
-03.Automated stock data ingestion from an external API
-04.Loading cleaned data into PostgreSQL
-05.End-to-end ETL pipeline running in containers
+1. Workflow orchestration with **Dagster**  
+2. Containerization using **Docker & Docker Compose**  
+3. Automated stock data ingestion from an external API  
+4. Data cleaning and insertion into **PostgreSQL**  
+5. End-to-end **ETL pipeline** execution in containers  
 
-📁 Project Structure
+## ✨ Features
 
+- ✅ Fetches **daily stock prices** from AlphaVantage API  
+- ✅ Parses **JSON → Structured rows**  
+- ✅ Inserts cleaned data into **PostgreSQL**  
+- ✅ Supports **scheduled runs** via Dagster Daemon  
+- ✅ Fully **Dockerized** for easy setup & reproducibility  
+- ✅ Includes **SQL schema** for automatic table creation  
+- ✅ Easily extendable for multiple stock symbols
+  
+
+## 📁 Project Structure
+
+```
 dockerized-dagster-stock-pipeline/
 │── fetcher/
 │   ├── __init__.py
@@ -32,79 +43,85 @@ dockerized-dagster-stock-pipeline/
 │── requirements.txt
 │── .env
 │── README.md
+```
 
+## 🔧 Environment Setup
 
+Create a `.env` file in the project root with the following variables:
+.env file
 
-📌 Features
-
-✔ Fetches daily stock prices
-✔ Parses JSON → Structured rows
-✔ Inserts into PostgreSQL
-✔ Automated scheduled runs via Dagster Daemon
-✔ Full Dockerization for reproducibility
-✔ Includes SQL table creation file
-✔ Easy to extend for multiple stocks
-
-
-🔧 Environment Setup
-
-Create .env file
+```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=stockdb
 
 ALPHAVANTAGE_API_KEY=YOUR_API_KEY_HERE
 STOCK_SYMBOL=MSFT
+```
+
+## 🐳 Run the Project
+
+### 1️⃣ Start All Services
+
+Build and start the containers:
+
+     docker compose up --build
+
+This launches:
+- Dagster Webserver  
+- Dagster Daemon  
+- PostgreSQL Database  
+
+### 2️⃣ Open Dagster UI
+
+Visit the Dagster UI at  
+
+👉 [http://localhost:3000](http://localhost:3000)  
+
+You should see the repository and pipeline listed.
+
+### 3️⃣ Trigger a Pipeline Run
+
+In the Dagster UI:
+
+         stock_pipeline → Launch Run
+
+This will start the ETL process to fetch and store stock data.
+
+### 4️⃣ View Data in PostgreSQL
+
+Open a terminal and connect to the database:
+
+                 docker exec -it dockerized-dagster-stock-pipeline-postgres-1 bash psql -U postgres -d stockdb
+                 
+Run a sample query:
+
+                SELECT * FROM stock_data LIMIT 20;
+                
+### 🛠 Stop All Services
+To stop and remove containers, run:
+
+               docker compose down
+               
+
+## 📚 Technology Stack
+
+| Component | Purpose |
+|------------|----------|
+| **Dagster** | Workflow orchestration & scheduling |
+| **Python** | Fetching & parsing stock data |
+| **PostgreSQL** | Persistent data storage |
+| **Docker Compose** | Multi-service containerization |
+| **AlphaVantage API** | Stock market data source |
 
 
-🐳 Run the Project
+## 🌟 Future Improvements
 
-1️⃣ Start all Docker services
-            docker compose up --build
-   This starts:
-      01.Dagster Webserver
-      02.Dagster Daemon
-      03.PostgreSQL
-    
-2️⃣ Open Dagster UI
+Potential enhancements for later versions:
+1. Support for multiple stock symbols  
+2. Enhanced logging & monitoring  
+3. Grafana dashboard for stock trend visualization  
+4. Apache Airflow version for comparison  
 
-   👉 http://localhost:3000
+![Dagster Pipeline Overview](image.png)
 
-   You will see the repository and pipeline listed.
-
-3️⃣ Trigger pipeline run
-
-    In the Dagster UI:
-    stock_pipeline → Launch Run
-
-4️⃣ Viewing Data in PostgreSQL
-           Open a terminal and run:
-           docker exec -it dockerized-dagster-stock-pipeline-postgres-1 bash psql -U postgres -d stockdb
-
-           Query sample:
-           SELECT * FROM stock_data LIMIT 20;
-
-🛠 Stopping Services
-           docker compose down
-        
-
-                         ![alt text](image.png)
-
-📚 Technology Stack
-
-| Component            | Purpose                              |
-| -------------------- | ------------------------------------ |
-| **Dagster**          | Workflow orchestration & scheduling  |
-| **Python**           | Fetching & parsing stock market data |
-| **PostgreSQL**       | Persistent storage                   |
-| **Docker Compose**   | Multi-service containerization       |
-| **AlphaVantage API** | Stock market data source             |
-
-
-⭐ Future Improvements
-
-Here are enhancements you can add later:
-01.Support multiple stock symbols
-02.Add logging & monitoring
-03.Add Grafana dashboard for stock trends
-04.Add Airflow version for comparison
