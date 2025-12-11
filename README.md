@@ -123,5 +123,4 @@ Potential enhancements for later versions:
 3. Grafana dashboard for stock trend visualization  
 4. Apache Airflow version for comparison  
 
-![Dagster Pipeline Overview](image.png)
 
